@@ -270,4 +270,208 @@ visa_documents(thailand, 'Valid passport, Return ticket, Visa on arrival $35').
 best_season(thailand, 'November to February (Cool season)').
 ```
 
-No changes to Python code are needed. The system will automaticall
+No changes to Python code are needed. The system will automatically include the new destination.
+
+### Adding New Interest Categories
+
+**Step 1:** Add facts in `travel_kb.pl`:
+```prolog
+interest_match(switzerland, skiing).
+```
+
+**Step 2:** Update the GUI in `main.py` (around line 140):
+```python
+interests = [
+    # ... existing interests ...
+    ("Skiing & Snow", "skiing"),
+]
+```
+
+### Modifying Budget Levels
+
+To add more budget tiers, modify the `budget_matches/2` rule in `travel_kb.pl`:
+
+```prolog
+budget_matches(ultra_high, low).
+budget_matches(ultra_high, medium).
+budget_matches(ultra_high, high).
+budget_matches(ultra_high, ultra_high).
+```
+
+---
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+**Issue 1: SWI-Prolog not found**
+```
+Error: pyswip.prolog.PrologError: Could not find SWI-Prolog
+```
+**Solution:**
+- Install SWI-Prolog from the official website
+- Add SWI-Prolog to system PATH
+- Restart your terminal or IDE
+
+**Issue 2: Knowledge base file not found**
+```
+FileNotFoundError: Prolog knowledge base 'travel_kb.pl' not found!
+```
+**Solution:**
+- Ensure `travel_kb.pl` is in the same directory as `main.py`
+- Check file name spelling (case-sensitive on Linux/Mac)
+
+**Issue 3: Module not found error**
+```
+ModuleNotFoundError: No module named 'customtkinter'
+```
+**Solution:**
+```bash
+pip install customtkinter
+```
+
+**Issue 4: Prolog query returns no results**
+**Solution:**
+- Open `travel_kb.pl` in SWI-Prolog terminal
+- Test query manually: `?- can_visit(Dest, high, beach).`
+- Check for syntax errors in the Prolog file
+
+**Issue 5: GUI doesn't display properly**
+**Solution:**
+- Update CustomTkinter: `pip install --upgrade customtkinter`
+- Verify Python version is 3.8 or higher
+
+---
+
+## Testing
+
+### Testing the Prolog Knowledge Base
+
+You can test the Prolog knowledge base independently:
+
+```bash
+swipl
+?- consult('travel_kb.pl').
+true.
+
+?- can_visit(Dest, low, nature).
+Dest = nepal.
+
+?- destination_info(maldives, high, beach, V, D, S, M).
+V = visa_free,
+D = 'Valid passport (6 months validity), Return ticket, Hotel booking confirmation',
+S = 'November to April (Dry season)',
+M = 2000.
+```
+
+### Testing the Python Application
+
+Run the application and test different scenarios:
+
+```bash
+python main.py
+```
+
+Test cases:
+- Low Budget + Nature = Should return Nepal
+- High Budget + Beach = Should return Maldives and Turkey
+- Medium Budget + History = Should return Turkey
+- Low Budget + City = Should return no results
+
+---
+
+## Educational Value
+
+This project demonstrates several important concepts:
+
+### Software Engineering
+- Separation of Concerns (Logic vs Presentation)
+- Declarative Programming (Prolog) vs Imperative Programming (Python)
+- Expert Systems Architecture
+- MVC Pattern implementation
+
+### Artificial Intelligence
+- Backward Chaining reasoning
+- Unification and pattern matching
+- Rule-Based Systems
+- Knowledge representation
+
+### Practical Applications
+- Travel planning systems
+- Visa advisory tools
+- Decision support systems
+- Recommendation engines
+
+---
+
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/new-destination`
+3. Commit your changes: `git commit -m 'Add Malaysia as destination'`
+4. Push to the branch: `git push origin feature/new-destination`
+5. Open a Pull Request
+
+**Ideas for Contributions:**
+- Add more destinations (Malaysia, Sri Lanka, Saudi Arabia, etc.)
+- Implement flight cost estimation
+- Add hotel recommendations
+- Create a web version using Flask or Streamlit
+- Add multi-language support (Urdu, English)
+- Include travel insurance recommendations
+
+---
+
+## Future Enhancements
+
+Planned features for future versions:
+- Real-time flight price integration
+- Hotel booking recommendations
+- Multi-country trip planning
+- Weather forecasts for destinations
+- Currency conversion calculator
+- User profile saving
+- Export recommendations as PDF
+- Mobile application version
+- Web deployment
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+```
+MIT License
+
+Copyright (c) 2024
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+```
+
+---
+
+## Acknowledgments
+
+- SWI-Prolog: Powerful Prolog implementation
+- CustomTkinter: Modern Python GUI framework
+- PySwip: Python-Prolog bridge library
+- Pakistani Travel Community: Domain knowledge and requirements
+
+---
+
+**Made for Pakistani Travelers**
